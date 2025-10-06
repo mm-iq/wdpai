@@ -1,3 +1,3 @@
 <?php
 
-echo "<h1>Hi Students!</h1>";
+echo "<h1>Hi Students! 🌅</h1>";
