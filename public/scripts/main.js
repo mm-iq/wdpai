@@ -1,4 +1,4 @@
-const header = document.querySelector('#tickle');
+const header = document.querySelector('#title');
 console.log(header);
 
 header.addEventListener('click', () => {
