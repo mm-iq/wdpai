@@ -1,6 +1,7 @@
 <?php
 
 require_once 'src/controllers/SecurityController.php';
+require_once 'src/controllers/DashboardController.php';
 
 class Routing {
 
@@ -12,7 +13,11 @@ class Routing {
         'register' => [
             'controller' => "SecurityController",
             'action' => "register"
-        ]
+        ],
+        'dashboard' => [
+            'controller' => "DashboardController",
+            'action' => "index"
+        ]        
     ];
 
     public static function run(string $path){
@@ -20,10 +25,6 @@ class Routing {
     //TODO na podstawie sciezki sprawdzamy jaki HTML zwrocic
     switch($path) {
     case 'dashboard':
-        # co jeśli użytkownik w url przekaże np. dashboard/1647
-        # jak przekazać zmienną do akcji z kontrolera?        
-        include 'public/views/dashboard.html';
-        break;
     case 'login':
         $controller = new Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
