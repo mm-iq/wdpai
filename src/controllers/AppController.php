@@ -2,20 +2,38 @@
 
 class AppController {
 
-    protected function render(string $template = null, array $variables = [])
-    {
-        $templatePath = 'public/views/'. $template.'.html';
+    protected function isGet(): bool {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+
+    protected function isPost(): bool {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+    
+    // $template to nazwa pliku (np. "dashboard"), $variables to dane (np. karty)
+    protected function render(string $template = null, array $variables = []){
+        // ustalenie, ścieżki, w której będziemy szukać widoku o końcówce .html
+        $templatePath = 'public/views/'.$template.'.html';
         $templatePath404 = 'public/views/404.html';
         $output = "";
 
+        // Sprawdzenie dostępności - czy plik widoku istnieje
         if(file_exists($templatePath)){
+            // Skanuje tablicę: Przegląda wszystkie klucze w tablicy $variables (np. 'cards', 'title', 'uzytkownik').
+            // Tworzy nowe symbole: Dla każdego klucza dodaje nowy wpis do tabeli symboli. Ten nowy wpis ma nazwę klucza (z dodanym znakiem $) i przypisaną mu wartość z tablicy.
+            // Zamiast skomplikowanego dostępu do tablicy, możemy używać krótkich, prostych nazw zmiennych
+            // $_variables['uzytkownik'] = 'Marek'      =====>     $uzytkownik = 'Marek' 
             extract($variables);
-
+            // Kod HTML nie pojawia się od razu na ekranie. 
+            // Zamiast tego, to co pomiędzy ob_start i ob_get_clean trafia do bufora w pamięci RAM.
             ob_start();
+            // załadowanie pliku HTML, w którym PHP wstawia dane ($cards, $user, itp. dzięki extract)
             include $templatePath;
+            // ob_get_clean bierze cały gotowy, sklejony kod HTML z bufora i przypisuje go do zmiennej
             $output = ob_get_clean();
         }
         else{
+            // 404
             ob_start();
             include $templatePath404;
             $output = ob_get_clean();
